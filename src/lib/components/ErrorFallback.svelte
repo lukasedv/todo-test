@@ -22,6 +22,9 @@
     The app encountered an unexpected error and couldn't load properly. Try refreshing the page, or reset your app data if the problem persists.
   </p>
   <p class="error-detail">{error.message}</p>
+  {#if import.meta.env.DEV && error.stack}
+    <pre class="error-stack">{error.stack}</pre>
+  {/if}
   <div class="error-actions">
     <button class="btn btn-primary" onclick={reload} aria-label="Reload App">
       Reload App
@@ -102,6 +105,20 @@
     font-size: 0.875rem;
     max-width: 32rem;
     word-break: break-word;
+  }
+
+  .error-stack {
+    margin: 0 0 1.5rem;
+    padding: 0.75rem 1rem;
+    background: var(--color-surface, #f9fafb);
+    border-radius: 0.5rem;
+    font-family: monospace;
+    font-size: 0.75rem;
+    max-width: 48rem;
+    text-align: left;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-x: auto;
   }
 
   .error-actions {
