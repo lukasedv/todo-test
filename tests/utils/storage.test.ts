@@ -17,7 +17,7 @@ describe('loadFromStorage', () => {
 
   it('returns fallback when stored value is malformed JSON', () => {
     localStorage.setItem('test', '{invalid json');
-    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const spy = vi.spyOn(console, 'warn').mockImplementation(() => {});
     expect(loadFromStorage('test', 'fallback')).toBe('fallback');
     expect(spy).toHaveBeenCalled();
     spy.mockRestore();
@@ -31,7 +31,7 @@ describe('loadFromStorage', () => {
     vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
       throw new Error('Access denied');
     });
-    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const spy = vi.spyOn(console, 'warn').mockImplementation(() => {});
     expect(loadFromStorage('key', 42)).toBe(42);
     expect(spy).toHaveBeenCalled();
     spy.mockRestore();
@@ -53,7 +53,7 @@ describe('saveToStorage', () => {
     vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
       throw new DOMException('Quota exceeded', 'QuotaExceededError');
     });
-    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const spy = vi.spyOn(console, 'warn').mockImplementation(() => {});
     expect(() => saveToStorage('key', 'value')).not.toThrow();
     expect(spy).toHaveBeenCalled();
     spy.mockRestore();

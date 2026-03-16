@@ -3,8 +3,8 @@ export function loadFromStorage<T>(key: string, fallback: T): T {
     const raw = localStorage.getItem(key);
     if (raw === null) return fallback;
     return JSON.parse(raw) as T;
-  } catch (err) {
-    console.error(`[Storage] Failed to load key "${key}":`, err);
+  } catch {
+    console.warn(`[storage] Failed to read "${key}" from localStorage.`);
     return fallback;
   }
 }
@@ -12,8 +12,8 @@ export function loadFromStorage<T>(key: string, fallback: T): T {
 export function saveToStorage<T>(key: string, value: T): void {
   try {
     localStorage.setItem(key, JSON.stringify(value));
-  } catch (err) {
-    console.error(`[Storage] Failed to save key "${key}":`, err);
+  } catch {
+    console.warn(`[storage] Failed to write "${key}" to localStorage.`);
   }
 }
 
@@ -23,7 +23,7 @@ export function clearAppStorage(): void {
     localStorage.removeItem('filter');
     localStorage.removeItem('sortBy');
     localStorage.removeItem('theme');
-  } catch (err) {
-    console.error('[Storage] Failed to clear app data:', err);
+  } catch {
+    console.warn('[storage] Failed to clear app data.');
   }
 }
