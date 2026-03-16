@@ -139,7 +139,7 @@
           <ul class="features-list">
             {#each features as feature}
               <li>
-                <span class="feature-icon">{feature.icon}</span>
+                <span class="feature-icon" aria-hidden="true">{feature.icon}</span>
                 <div>
                   <strong>{feature.label}</strong>
                   <span class="feature-desc">{feature.description}</span>
