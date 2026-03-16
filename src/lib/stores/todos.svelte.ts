@@ -1,10 +1,16 @@
 import type { Todo, Filter, SortBy } from '../types.js';
 import { loadFromStorage, saveToStorage } from '../utils/storage.js';
 import { applyFilterAndSort } from '../utils/sorting.js';
+import { isValidTodo } from '../utils/validation.js';
 
-let todos = $state<Todo[]>(loadFromStorage<Todo[]>('todos') ?? []);
-let filter = $state<Filter>(loadFromStorage<Filter>('filter') ?? 'all');
-let sortBy = $state<SortBy>(loadFromStorage<SortBy>('sortBy') ?? 'createdAt');
+function loadTodos(): Todo[] {
+  const raw = loadFromStorage<unknown[]>('todos', []);
+  return Array.isArray(raw) ? raw.filter(isValidTodo) : [];
+}
+
+let todos = $state<Todo[]>(loadTodos());
+let filter = $state<Filter>(loadFromStorage<Filter>('filter', 'all'));
+let sortBy = $state<SortBy>(loadFromStorage<SortBy>('sortBy', 'createdAt'));
 let searchQuery = $state('');
 let deletedTodo = $state<{ todo: Todo; index: number } | null>(null);
 let toastTimer = $state<ReturnType<typeof setTimeout> | null>(null);
