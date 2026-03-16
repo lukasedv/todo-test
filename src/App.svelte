@@ -8,26 +8,27 @@
   import Confetti from './lib/components/Confetti.svelte';
   import AboutModal from './lib/components/AboutModal.svelte';
   import { getTodos, getDeletedTodo } from './lib/stores/todos.svelte.js';
-  import { loadFromStorage, saveToStorage } from './lib/utils/storage.js';
-  
-  function getInitialTheme(): 'light' | 'dark' {
-    const stored = loadFromStorage<string>('theme', '');
-    if (stored === 'light' || stored === 'dark') return stored;
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  }
-  
-  let theme = $state<'light' | 'dark'>(getInitialTheme());
+  import {
+    getThemePreference,
+    getEffectiveTheme,
+    toggleTheme,
+    resetToSystem,
+  } from './lib/stores/theme.svelte.js';
+
+  const themePreference = $derived(getThemePreference());
+  const effectiveTheme = $derived(getEffectiveTheme());
+
   let showAbout = $state(false);
   let aboutTriggerRef: HTMLButtonElement | undefined = $state();
-  
+
   const todos = $derived(getTodos());
   const deletedTodo = $derived(getDeletedTodo());
   const showToast = $derived(deletedTodo !== null);
-  
+
   const allCompleted = $derived(todos.length > 0 && todos.every(t => t.completed));
   let previousAllCompleted = $state(false);
   let showConfetti = $state(false);
-  
+
   $effect(() => {
     if (allCompleted && !previousAllCompleted) {
       showConfetti = true;
@@ -35,12 +36,7 @@
     }
     previousAllCompleted = allCompleted;
   });
-  
-  $effect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    saveToStorage('theme', theme);
-  });
-  
+
   $effect(() => {
     const handler = (e: KeyboardEvent) => {
       const tag = (e.target as HTMLElement).tagName;
@@ -53,11 +49,7 @@
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
   });
-  
-  function toggleTheme() {
-    theme = theme === 'light' ? 'dark' : 'light';
-  }
-  
+
   function closeAbout() {
     showAbout = false;
     aboutTriggerRef?.focus();
@@ -75,7 +67,7 @@
           aria-label="About"
           bind:this={aboutTriggerRef}
         >ⓘ</button>
-        <ThemeToggle {theme} onToggle={toggleTheme} />
+        <ThemeToggle {themePreference} {effectiveTheme} onToggle={toggleTheme} onResetToSystem={resetToSystem} />
       </div>
     </div>
   </header>
@@ -99,7 +91,8 @@
 </div>
 
 <style>
-  :global(:root) {
+  :global(:root),
+  :global(html.light) {
     --color-bg: #ffffff;
     --color-surface: #f9fafb;
     --color-border: #e5e7eb;
@@ -113,7 +106,7 @@
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   }
   
-  :global([data-theme="dark"]) {
+  :global(html.dark) {
     --color-bg: #1f2937;
     --color-surface: #374151;
     --color-border: #4b5563;
