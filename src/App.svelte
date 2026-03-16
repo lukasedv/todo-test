@@ -7,11 +7,15 @@
   import ThemeToggle from './lib/components/ThemeToggle.svelte';
   import Confetti from './lib/components/Confetti.svelte';
   import { getTodos, getDeletedTodo } from './lib/stores/todos.svelte.js';
+  import { loadFromStorage, saveToStorage } from './lib/utils/storage.js';
   
-  let theme = $state<'light' | 'dark'>(
-    (localStorage.getItem('theme') as 'light' | 'dark') ?? 
-    (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
-  );
+  function getInitialTheme(): 'light' | 'dark' {
+    const stored = loadFromStorage<string>('theme', '');
+    if (stored === 'light' || stored === 'dark') return stored;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  
+  let theme = $state<'light' | 'dark'>(getInitialTheme());
   
   const todos = $derived(getTodos());
   const deletedTodo = $derived(getDeletedTodo());
@@ -31,7 +35,7 @@
   
   $effect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
+    saveToStorage('theme', theme);
   });
   
   function toggleTheme() {
