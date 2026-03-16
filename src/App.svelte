@@ -6,6 +6,7 @@
   import ToastNotification from './lib/components/ToastNotification.svelte';
   import ThemeToggle from './lib/components/ThemeToggle.svelte';
   import Confetti from './lib/components/Confetti.svelte';
+  import AboutModal from './lib/components/AboutModal.svelte';
   import { getTodos, getDeletedTodo } from './lib/stores/todos.svelte.js';
   import { loadFromStorage, saveToStorage } from './lib/utils/storage.js';
   
@@ -16,6 +17,8 @@
   }
   
   let theme = $state<'light' | 'dark'>(getInitialTheme());
+  let showAbout = $state(false);
+  let aboutTriggerRef: HTMLButtonElement | undefined = $state();
   
   const todos = $derived(getTodos());
   const deletedTodo = $derived(getDeletedTodo());
@@ -38,8 +41,26 @@
     saveToStorage('theme', theme);
   });
   
+  $effect(() => {
+    const handler = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement).tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+      if (e.key === '?') {
+        e.preventDefault();
+        showAbout = true;
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  });
+  
   function toggleTheme() {
     theme = theme === 'light' ? 'dark' : 'light';
+  }
+  
+  function closeAbout() {
+    showAbout = false;
+    aboutTriggerRef?.focus();
   }
 </script>
 
@@ -47,7 +68,15 @@
   <header class="header">
     <div class="header-content">
       <h1 class="title">✨ Todo App</h1>
-      <ThemeToggle {theme} onToggle={toggleTheme} />
+      <div class="header-actions">
+        <button
+          class="about-btn"
+          onclick={() => { showAbout = true; }}
+          aria-label="About"
+          bind:this={aboutTriggerRef}
+        >ⓘ</button>
+        <ThemeToggle {theme} onToggle={toggleTheme} />
+      </div>
     </div>
   </header>
   
@@ -66,6 +95,7 @@
   
   <ToastNotification show={showToast} />
   <Confetti show={showConfetti} />
+  <AboutModal isOpen={showAbout} onClose={closeAbout} />
 </div>
 
 <style>
@@ -133,6 +163,34 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+  
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .about-btn {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-md);
+    line-height: 1;
+    transition: color 0.15s, background 0.15s;
+  }
+  
+  .about-btn:hover {
+    color: var(--color-text);
+    background: var(--color-border);
+  }
+  
+  .about-btn:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
   }
   
   .title {
