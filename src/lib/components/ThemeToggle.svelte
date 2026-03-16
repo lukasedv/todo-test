@@ -27,7 +27,7 @@
     aria-label={ariaLabel}
     title={isSystemMode ? 'Using system preference' : ariaLabel}
   >
-    <span class="icon" class:spin={true}>
+    <span class="icon">
       {#if effectiveTheme === 'light'}
         <svg
           xmlns="http://www.w3.org/2000/svg"
