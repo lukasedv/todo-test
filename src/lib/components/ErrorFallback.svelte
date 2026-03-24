@@ -65,7 +65,7 @@
   }
 
   :global(html.dark) .btn-primary:hover {
-    background: #93bbfd;
+    background: var(--color-accent-hover, #93bbfd);
   }
 
   :global(html.dark) .btn-danger {
@@ -73,7 +73,7 @@
   }
 
   :global(html.dark) .btn-danger:hover {
-    background: #fca5a5;
+    background: var(--color-danger-hover, #fca5a5);
   }
 
   .error-icon {
@@ -147,7 +147,7 @@
   }
 
   .btn-primary:hover {
-    background: #2563eb;
+    background: var(--color-accent-hover, #2563eb);
   }
 
   .btn-danger {
@@ -155,6 +155,6 @@
   }
 
   .btn-danger:hover {
-    background: #b91c1c;
+    background: var(--color-danger-hover, #b91c1c);
   }
 </style>

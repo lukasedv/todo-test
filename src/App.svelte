@@ -106,6 +106,8 @@
     --color-priority-medium-bg: #fffbeb;
     --color-priority-low-bg: #f0fdf4;
     --color-danger-hover-bg: #fef2f2;
+    --color-accent-hover: #2563eb;
+    --color-danger-hover: #b91c1c;
     --radius-md: 0.5rem;
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   }
@@ -124,6 +126,8 @@
     --color-priority-medium-bg: rgba(251, 191, 36, 0.15);
     --color-priority-low-bg: rgba(52, 211, 153, 0.15);
     --color-danger-hover-bg: rgba(248, 113, 113, 0.15);
+    --color-accent-hover: #93bbfd;
+    --color-danger-hover: #fca5a5;
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.2);
   }
   
