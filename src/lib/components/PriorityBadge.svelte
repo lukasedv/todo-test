@@ -20,7 +20,7 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
-  .badge-high { background: #fef2f2; color: var(--color-priority-high); border: 1px solid var(--color-priority-high); }
-  .badge-medium { background: #fffbeb; color: var(--color-priority-medium); border: 1px solid var(--color-priority-medium); }
-  .badge-low { background: #f0fdf4; color: var(--color-priority-low); border: 1px solid var(--color-priority-low); }
+  .badge-high { background: var(--color-priority-high-bg); color: var(--color-priority-high); border: 1px solid var(--color-priority-high); }
+  .badge-medium { background: var(--color-priority-medium-bg); color: var(--color-priority-medium); border: 1px solid var(--color-priority-medium); }
+  .badge-low { background: var(--color-priority-low-bg); color: var(--color-priority-low); border: 1px solid var(--color-priority-low); }
 </style>

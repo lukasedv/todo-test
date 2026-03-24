@@ -272,7 +272,7 @@
     transition: background 0.15s;
   }
   .edit-btn:hover { background: var(--color-surface); }
-  .delete-btn:hover { background: #fef2f2; border-color: var(--color-priority-high); }
+  .delete-btn:hover { background: var(--color-danger-hover-bg); border-color: var(--color-priority-high); }
   
   .edit-form { flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
   .edit-title {

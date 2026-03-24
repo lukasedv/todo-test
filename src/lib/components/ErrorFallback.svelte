@@ -50,32 +50,30 @@
     color: var(--color-text, #1f2937);
   }
 
-  @media (prefers-color-scheme: dark) {
-    .error-fallback {
-      background: #1f2937;
-      color: #f9fafb;
-    }
+  :global(html.dark) .error-fallback {
+    background: var(--color-bg, #1f2937);
+    color: var(--color-text, #f9fafb);
+  }
 
-    .error-detail {
-      background: #374151;
-      color: #d1d5db;
-    }
+  :global(html.dark) .error-detail {
+    background: var(--color-surface, #374151);
+    color: var(--color-text-muted, #d1d5db);
+  }
 
-    .btn-primary {
-      background: #60a5fa;
-    }
+  :global(html.dark) .btn-primary {
+    background: var(--color-accent, #60a5fa);
+  }
 
-    .btn-primary:hover {
-      background: #93bbfd;
-    }
+  :global(html.dark) .btn-primary:hover {
+    background: var(--color-accent-hover, #93bbfd);
+  }
 
-    .btn-danger {
-      background: #f87171;
-    }
+  :global(html.dark) .btn-danger {
+    background: var(--color-priority-high, #f87171);
+  }
 
-    .btn-danger:hover {
-      background: #fca5a5;
-    }
+  :global(html.dark) .btn-danger:hover {
+    background: var(--color-danger-hover, #fca5a5);
   }
 
   .error-icon {
@@ -149,7 +147,7 @@
   }
 
   .btn-primary:hover {
-    background: #2563eb;
+    background: var(--color-accent-hover, #2563eb);
   }
 
   .btn-danger {
@@ -157,6 +155,6 @@
   }
 
   .btn-danger:hover {
-    background: #b91c1c;
+    background: var(--color-danger-hover, #b91c1c);
   }
 </style>
