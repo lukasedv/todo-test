@@ -102,6 +102,10 @@
     --color-priority-high: #dc2626;
     --color-priority-medium: #f59e0b;
     --color-priority-low: #10b981;
+    --color-priority-high-bg: #fef2f2;
+    --color-priority-medium-bg: #fffbeb;
+    --color-priority-low-bg: #f0fdf4;
+    --color-danger-hover-bg: #fef2f2;
     --radius-md: 0.5rem;
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   }
@@ -116,6 +120,11 @@
     --color-priority-high: #f87171;
     --color-priority-medium: #fbbf24;
     --color-priority-low: #34d399;
+    --color-priority-high-bg: rgba(248, 113, 113, 0.15);
+    --color-priority-medium-bg: rgba(251, 191, 36, 0.15);
+    --color-priority-low-bg: rgba(52, 211, 153, 0.15);
+    --color-danger-hover-bg: rgba(248, 113, 113, 0.15);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.2);
   }
   
   :global(*) {
