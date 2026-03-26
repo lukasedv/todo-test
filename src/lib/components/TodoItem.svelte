@@ -3,6 +3,7 @@
   import { toggleTodo, updateTodo, deleteTodo, reorderTodos, getSortBy } from '../stores/todos.svelte.js';
   import PriorityBadge from './PriorityBadge.svelte';
   import TagChip from './TagChip.svelte';
+  import SourceBadge from './SourceBadge.svelte';
   import { getDueDateStatus, formatDueDate } from '../utils/date.js';
   
   const { todo }: { todo: Todo } = $props();
@@ -118,6 +119,7 @@
           title="Double-click to edit"
         >{todo.title}</span>
         <PriorityBadge priority={todo.priority} />
+        <SourceBadge source={todo.source} />
       </div>
       
       {#if todo.description}
