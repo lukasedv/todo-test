@@ -79,6 +79,7 @@
       onclick={() => { showPermissions = true; }}
       disabled={loading}
       aria-label="Connect your Microsoft 365 account"
+      aria-busy={loading}
     >
       <svg class="ms-icon" viewBox="0 0 21 21" width="16" height="16" aria-hidden="true">
         <rect x="1" y="1" width="9" height="9" fill="#f25022"/>

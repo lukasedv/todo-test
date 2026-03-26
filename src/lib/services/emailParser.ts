@@ -123,7 +123,7 @@ export function assessPriority(email: GraphEmail): Priority {
 }
 
 export function extractActionItems(email: GraphEmail): ActionItem[] {
-  const text = `${email.subject} ${email.bodyPreview}`;
+  const text = `${email.subject ?? ''} ${email.bodyPreview ?? ''}`;
   const items: ActionItem[] = [];
   const seenPhrases = new Set<string>();
 
@@ -153,13 +153,14 @@ export function extractActionItems(email: GraphEmail): ActionItem[] {
   }
 
   if (items.length === 0 && email.flag?.flagStatus === 'flagged') {
+    const preview = email.bodyPreview ?? '';
     items.push({
       title: email.subject,
-      description: `From: ${email.from.emailAddress.name} <${email.from.emailAddress.address}>\nSubject: ${email.subject}\n\n${email.bodyPreview.slice(0, 150)}`,
+      description: `From: ${email.from.emailAddress.name} <${email.from.emailAddress.address}>\nSubject: ${email.subject}\n\n${preview.slice(0, 150)}`,
       priority: assessPriority(email),
       dueDate: detectDueDate(text),
       actionPhrase: 'Flagged email',
-      snippet: email.bodyPreview.slice(0, 150),
+      snippet: preview.slice(0, 150),
     });
   }
 

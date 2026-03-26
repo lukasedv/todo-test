@@ -26,10 +26,15 @@
     }
   }
 
-  function highlightAction(text: string, phrase: string): string {
-    if (!phrase) return text;
-    const escaped = phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    return text.replace(new RegExp(`(${escaped})`, 'i'), '<strong>$1</strong>');
+  function highlightAction(text: string, phrase: string): { before: string; match: string; after: string } {
+    if (!phrase) return { before: text, match: '', after: '' };
+    const idx = text.toLowerCase().indexOf(phrase.toLowerCase());
+    if (idx === -1) return { before: text, match: '', after: '' };
+    return {
+      before: text.slice(0, idx),
+      match: text.slice(idx, idx + phrase.length),
+      after: text.slice(idx + phrase.length),
+    };
   }
 </script>
 
@@ -46,7 +51,12 @@
   <div class="card-subject">{suggestion.emailSubject}</div>
   <div class="card-title">{suggestion.suggestedTitle}</div>
   <p class="card-snippet">
-    {@html highlightAction(suggestion.snippet, suggestion.actionPhrase)}
+    {#if suggestion.actionPhrase}
+      {@const parts = highlightAction(suggestion.snippet, suggestion.actionPhrase)}
+      {parts.before}<strong class="action-highlight">{parts.match}</strong>{parts.after}
+    {:else}
+      {suggestion.snippet}
+    {/if}
   </p>
   {#if suggestion.suggestedDueDate}
     <span class="card-due">📅 Due: {formatDate(suggestion.suggestedDueDate)}</span>
@@ -106,7 +116,7 @@
     margin: 0;
     line-height: 1.4;
   }
-  .card-snippet :global(strong) {
+  .card-snippet .action-highlight {
     color: var(--color-accent);
     font-weight: 600;
   }

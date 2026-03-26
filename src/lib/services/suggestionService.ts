@@ -25,7 +25,7 @@ export function generateSuggestions(
         suggestedDescription: item.description,
         suggestedPriority: item.priority,
         suggestedDueDate: item.dueDate,
-        suggestedTags: ['m365', 'email', email.from.emailAddress.name.split(' ')[0].toLowerCase()],
+        suggestedTags: ['m365', 'email', ...(email.from.emailAddress.name ? [email.from.emailAddress.name.split(' ')[0].toLowerCase()] : [])],
         sourceUrl: buildOutlookDeepLink(email.id),
         senderName: email.from.emailAddress.name,
         senderEmail: email.from.emailAddress.address,

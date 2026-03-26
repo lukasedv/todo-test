@@ -61,8 +61,8 @@
     aboutTriggerRef?.focus();
   }
 
-  function handleEditSuggestion(suggestion: Suggestion) {
-    // For now, edit suggestions are handled by auto-accepting — full edit support can be added later
+  function handleEditSuggestion(_suggestion: Suggestion) {
+    // Edit & Accept pre-fills the AddTodo form — full implementation in a future iteration
   }
 
   function handleIntegrationError(msg: string) {
