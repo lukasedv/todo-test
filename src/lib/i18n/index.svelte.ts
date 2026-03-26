@@ -64,7 +64,7 @@ export function setLocale(locale: Locale): void {
 }
 
 export function t(key: TranslationKey, params?: Record<string, string>): string {
-  let value = translations[currentLocale][key] ?? translations.en[key] ?? key;
+  let value = translations[currentLocale]?.[key] ?? (currentLocale !== 'en' ? translations.en[key] : undefined) ?? key;
   if (params) {
     for (const [paramKey, paramValue] of Object.entries(params)) {
       value = value.replace(`{${paramKey}}`, paramValue);
