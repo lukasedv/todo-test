@@ -1,13 +1,20 @@
 <script lang="ts">
   import type { Priority } from '../types.js';
+  import { t } from '../i18n/index.svelte.js';
   
   const { priority }: { priority: Priority } = $props();
   
-  const labels: Record<Priority, string> = { high: 'High', medium: 'Medium', low: 'Low' };
+  const labelKeys: Record<Priority, 'priority.high' | 'priority.medium' | 'priority.low'> = {
+    high: 'priority.high',
+    medium: 'priority.medium',
+    low: 'priority.low',
+  };
+
+  const label = $derived(t(labelKeys[priority]));
 </script>
 
-<span class="badge badge-{priority}" aria-label="Priority: {labels[priority]}">
-  {labels[priority]}
+<span class="badge badge-{priority}" aria-label="{t('todo.label.priority')}: {label}">
+  {label}
 </span>
 
 <style>

@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Todo, Priority } from '../types.js';
   import { toggleTodo, updateTodo, deleteTodo, reorderTodos, getSortBy } from '../stores/todos.svelte.js';
+  import { t, getDateLocale } from '../i18n/index.svelte.js';
   import PriorityBadge from './PriorityBadge.svelte';
   import TagChip from './TagChip.svelte';
   import { getDueDateStatus, formatDueDate } from '../utils/date.js';
@@ -18,7 +19,7 @@
   let isDraggingOver = $state(false);
   
   const dueDateStatus = $derived(getDueDateStatus(todo.dueDate));
-  const formattedDate = $derived(formatDueDate(todo.dueDate));
+  const formattedDate = $derived(formatDueDate(todo.dueDate, getDateLocale()));
   const isManualSort = $derived(getSortBy() === 'manual');
   
   function startEdit() {
@@ -39,7 +40,7 @@
   
   function confirmEdit() {
     if (!editTitle.trim()) {
-      editTitleError = 'Title is required';
+      editTitleError = t('todo.error.titleRequired');
       return;
     }
     const inputTags = editTagInput.split(',').map((t) => t.trim()).filter(Boolean);
@@ -98,13 +99,13 @@
   ondrop={handleDrop}
 >
   {#if isManualSort}
-    <span class="drag-handle" aria-label="Drag to reorder" title="Drag to reorder">⠿</span>
+    <span class="drag-handle" aria-label={t('todo.aria.dragToReorder')} title={t('todo.aria.dragToReorder')}>⠿</span>
   {/if}
   
   {#if !editing}
     <input
       type="checkbox"
-      aria-label="Mark '{todo.title}' as {todo.completed ? 'active' : 'complete'}"
+      aria-label={todo.completed ? t('todo.aria.markActive', { title: todo.title }) : t('todo.aria.markComplete', { title: todo.title })}
       checked={todo.completed}
       onchange={() => toggleTodo(todo.id)}
     />
@@ -115,7 +116,7 @@
         <span
           class="title"
           ondblclick={startEdit}
-          title="Double-click to edit"
+          title={t('todo.title.doubleClickEdit')}
         >{todo.title}</span>
         <PriorityBadge priority={todo.priority} />
       </div>
@@ -128,9 +129,9 @@
         {#if todo.dueDate}
           <span class="due-date due-{dueDateStatus}" title={formattedDate}>
             {#if dueDateStatus === 'overdue'}
-              ⚠️ Overdue
+              {t('date.overdue')}
             {:else if dueDateStatus === 'today'}
-              📅 Due today
+              {t('date.today')}
             {:else}
               📅 {formattedDate}
             {/if}
@@ -148,8 +149,8 @@
     </div>
     
     <div class="actions">
-      <button class="edit-btn" onclick={startEdit} aria-label="Edit todo">✎</button>
-      <button class="delete-btn" onclick={() => deleteTodo(todo.id)} aria-label="Delete todo">🗑</button>
+      <button class="edit-btn" onclick={startEdit} aria-label={t('todo.edit')}>✎</button>
+      <button class="delete-btn" onclick={() => deleteTodo(todo.id)} aria-label={t('todo.delete')}>🗑</button>
     </div>
   {:else}
     <div class="edit-form">
@@ -158,7 +159,7 @@
         class="edit-title"
         bind:value={editTitle}
         onkeydown={handleEditKeydown}
-        aria-label="Edit title"
+        aria-label={t('todo.aria.editTitle')}
         aria-invalid={!!editTitleError}
         autofocus
       />
@@ -168,18 +169,18 @@
       <textarea
         class="edit-desc"
         bind:value={editDescription}
-        placeholder="Description (optional)"
+        placeholder={t('todo.placeholder.description')}
         onkeydown={(e) => { if (e.key === 'Escape') cancelEdit(); }}
         rows={2}
-        aria-label="Edit description"
+        aria-label={t('todo.aria.editDescription')}
       ></textarea>
       <div class="edit-row">
-        <select bind:value={editPriority} aria-label="Edit priority">
-          <option value="high">High</option>
-          <option value="medium">Medium</option>
-          <option value="low">Low</option>
+        <select bind:value={editPriority} aria-label={t('todo.aria.editPriority')}>
+          <option value="high">{t('priority.high')}</option>
+          <option value="medium">{t('priority.medium')}</option>
+          <option value="low">{t('priority.low')}</option>
         </select>
-        <input type="date" bind:value={editDueDate} aria-label="Edit due date" />
+        <input type="date" bind:value={editDueDate} aria-label={t('todo.aria.editDueDate')} />
       </div>
       <div class="tags-container">
         {#each editTags as tag}
@@ -187,7 +188,7 @@
         {/each}
         <input
           type="text"
-          placeholder="Add tag…"
+          placeholder={t('todo.placeholder.tagEdit')}
           bind:value={editTagInput}
           onkeydown={(e) => {
             if (e.key === 'Enter' || e.key === ',') { e.preventDefault(); 
@@ -197,12 +198,12 @@
             }
             if (e.key === 'Escape') cancelEdit();
           }}
-          aria-label="Add tag"
+          aria-label={t('todo.aria.addTag')}
         />
       </div>
       <div class="edit-actions">
-        <button class="btn-primary" onclick={confirmEdit}>Save</button>
-        <button class="btn-secondary" onclick={cancelEdit}>Cancel</button>
+        <button class="btn-primary" onclick={confirmEdit}>{t('todo.save')}</button>
+        <button class="btn-secondary" onclick={cancelEdit}>{t('todo.cancel')}</button>
       </div>
     </div>
   {/if}
