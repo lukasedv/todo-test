@@ -8,24 +8,30 @@
   import LanguageSwitcher from './lib/components/LanguageSwitcher.svelte';
   import Confetti from './lib/components/Confetti.svelte';
   import AboutModal from './lib/components/AboutModal.svelte';
+  import SuggestionPanel from './lib/components/SuggestionPanel.svelte';
+  import IntegrationSettings from './lib/components/IntegrationSettings.svelte';
   import { getTodos, getDeletedTodo } from './lib/stores/todos.svelte.js';
+  import { getConnected } from './lib/stores/m365Store.svelte.js';
   import {
     getThemePreference,
     getEffectiveTheme,
     toggleTheme,
     resetToSystem,
   } from './lib/stores/theme.svelte.js';
+  import type { Suggestion } from './lib/types.js';
   import { t } from './lib/i18n/index.svelte.js';
 
   const themePreference = $derived(getThemePreference());
   const effectiveTheme = $derived(getEffectiveTheme());
 
   let showAbout = $state(false);
+  let showSettings = $state(false);
   let aboutTriggerRef: HTMLButtonElement | undefined = $state();
 
   const todos = $derived(getTodos());
   const deletedTodo = $derived(getDeletedTodo());
   const showToast = $derived(deletedTodo !== null);
+  const m365Connected = $derived(getConnected());
 
   const allCompleted = $derived(todos.length > 0 && todos.every(t => t.completed));
   let previousAllCompleted = $state(false);
@@ -56,6 +62,14 @@
     showAbout = false;
     aboutTriggerRef?.focus();
   }
+
+  function handleEditSuggestion(_suggestion: Suggestion) {
+    // Edit & Accept pre-fills the AddTodo form — full implementation in a future iteration
+  }
+
+  function handleIntegrationError(msg: string) {
+    // Errors shown via component-level UI for now
+  }
 </script>
 
 <div class="app">
@@ -63,6 +77,12 @@
     <div class="header-content">
       <h1 class="title">{t('app.title')}</h1>
       <div class="header-actions">
+        <button
+          class="about-btn"
+          onclick={() => { showSettings = !showSettings; }}
+          aria-label="Integration settings"
+          title="Integration settings"
+        >⚙</button>
         <button
           class="about-btn"
           onclick={() => { showAbout = true; }}
@@ -77,6 +97,12 @@
   
   <main class="main">
     <div class="container">
+      {#if showSettings}
+        <IntegrationSettings onError={handleIntegrationError} />
+      {/if}
+      
+      <SuggestionPanel onEditSuggestion={handleEditSuggestion} onError={handleIntegrationError} />
+      
       <AddTodo />
       
       <div class="controls">

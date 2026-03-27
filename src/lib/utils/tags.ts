@@ -9,7 +9,13 @@ const TAG_COLORS = [
   { bg: '#f3f4f6', text: '#374151' },
 ];
 
+const SPECIAL_TAG_COLORS: Record<string, { bg: string; text: string }> = {
+  m365: { bg: '#dbeafe', text: '#0078d4' },
+};
+
 export function getTagColor(tag: string): { bg: string; text: string } {
+  const special = SPECIAL_TAG_COLORS[tag.toLowerCase()];
+  if (special) return special;
   let hash = 0;
   for (let i = 0; i < tag.length; i++) {
     hash = (hash * 31 + tag.charCodeAt(i)) & 0xffffffff;

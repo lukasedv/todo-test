@@ -4,6 +4,7 @@
   import { t, getDateLocale } from '../i18n/index.svelte.js';
   import PriorityBadge from './PriorityBadge.svelte';
   import TagChip from './TagChip.svelte';
+  import SourceBadge from './SourceBadge.svelte';
   import { getDueDateStatus, formatDueDate } from '../utils/date.js';
   
   const { todo }: { todo: Todo } = $props();
@@ -119,6 +120,7 @@
           title={t('todo.title.doubleClickEdit')}
         >{todo.title}</span>
         <PriorityBadge priority={todo.priority} />
+        <SourceBadge source={todo.source} />
       </div>
       
       {#if todo.description}
