@@ -1,5 +1,6 @@
 <script lang="ts">
   import { clearAppStorage } from '../utils/storage.js';
+  import { t } from '../i18n/index.svelte.js';
 
   let { error }: { error: Error } = $props();
 
@@ -8,7 +9,7 @@
   }
 
   function resetAppData() {
-    if (window.confirm('This will delete all your todos and settings. Are you sure?')) {
+    if (window.confirm(t('error.confirmReset'))) {
       clearAppStorage();
       window.location.reload();
     }
@@ -17,20 +18,20 @@
 
 <div class="error-fallback" role="alert" aria-live="assertive">
   <div class="error-icon">⚠️</div>
-  <h1 class="error-title">Something went wrong</h1>
+  <h1 class="error-title">{t('error.title')}</h1>
   <p class="error-message">
-    The app encountered an unexpected error and couldn't load properly. Try refreshing the page, or reset your app data if the problem persists.
+    {t('error.message')}
   </p>
   <p class="error-detail">{error.message}</p>
   {#if import.meta.env.DEV && error.stack}
     <pre class="error-stack">{error.stack}</pre>
   {/if}
   <div class="error-actions">
-    <button class="btn btn-primary" onclick={reload} aria-label="Reload App">
-      Reload App
+    <button class="btn btn-primary" onclick={reload} aria-label={t('error.reload')}>
+      {t('error.reload')}
     </button>
-    <button class="btn btn-danger" onclick={resetAppData} aria-label="Reset App Data">
-      Reset App Data
+    <button class="btn btn-danger" onclick={resetAppData} aria-label={t('error.resetData')}>
+      {t('error.resetData')}
     </button>
   </div>
 </div>

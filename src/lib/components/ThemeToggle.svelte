@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { ThemePreference, EffectiveTheme } from '../stores/theme.svelte.js';
+  import { t } from '../i18n/index.svelte.js';
 
   const {
     themePreference,
@@ -14,7 +15,7 @@
   } = $props();
 
   const ariaLabel = $derived(
-    effectiveTheme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'
+    effectiveTheme === 'light' ? t('theme.switchToDark') : t('theme.switchToLight')
   );
 
   const isSystemMode = $derived(themePreference === 'system');
@@ -25,7 +26,7 @@
     class="theme-toggle"
     onclick={onToggle}
     aria-label={ariaLabel}
-    title={isSystemMode ? 'Using system preference' : ariaLabel}
+    title={isSystemMode ? t('theme.usingSystem') : ariaLabel}
   >
     <span class="icon">
       {#if effectiveTheme === 'light'}
@@ -74,10 +75,10 @@
     <button
       class="reset-btn"
       onclick={onResetToSystem}
-      aria-label="Reset to system theme preference"
-      title="Reset to system preference"
+      aria-label={t('theme.resetToSystem')}
+      title={t('theme.resetToSystem')}
     >
-      Auto
+      {t('theme.auto')}
     </button>
   {/if}
 </div>

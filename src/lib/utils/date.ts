@@ -14,8 +14,8 @@ export function getDueDateStatus(dueDate?: string): DueDateStatus {
   return 'future';
 }
 
-export function formatDueDate(dueDate?: string): string {
+export function formatDueDate(dueDate?: string, locale?: string): string {
   if (!dueDate) return '';
   const due = new Date(dueDate);
-  return due.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+  return due.toLocaleDateString(locale, { month: 'short', day: 'numeric', year: 'numeric' });
 }

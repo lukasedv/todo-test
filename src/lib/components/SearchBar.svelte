@@ -1,5 +1,6 @@
 <script lang="ts">
   import { getSearchQuery, setSearchQuery } from '../stores/todos.svelte.js';
+  import { t } from '../i18n/index.svelte.js';
   
   let query = $state(getSearchQuery());
   let debounceTimer: ReturnType<typeof setTimeout> | null = null;
@@ -23,13 +24,13 @@
   </svg>
   <input
     type="search"
-    placeholder="Search todos…"
+    placeholder={t('search.placeholder')}
     value={query}
     oninput={handleInput}
-    aria-label="Search todos"
+    aria-label={t('search.aria.label')}
   />
   {#if query}
-    <button class="clear-btn" onclick={clear} aria-label="Clear search">×</button>
+    <button class="clear-btn" onclick={clear} aria-label={t('search.aria.clear')}>×</button>
   {/if}
 </div>
 

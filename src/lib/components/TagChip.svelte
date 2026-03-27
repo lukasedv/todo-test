@@ -1,5 +1,6 @@
 <script lang="ts">
   import { getTagColor } from '../utils/tags.js';
+  import { t } from '../i18n/index.svelte.js';
   
   const { tag, onRemove }: { tag: string; onRemove?: () => void } = $props();
   
@@ -9,7 +10,7 @@
 <span class="chip" style="background:{color.bg};color:{color.text}">
   {tag}
   {#if onRemove}
-    <button class="remove-btn" onclick={onRemove} aria-label="Remove tag {tag}">×</button>
+    <button class="remove-btn" onclick={onRemove} aria-label={t('aria.removeTag', { tag })}>×</button>
   {/if}
 </span>
 

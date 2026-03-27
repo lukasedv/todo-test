@@ -1,6 +1,7 @@
 <script lang="ts">
   import { fly, fade } from 'svelte/transition';
   import { version } from '../../../package.json';
+  import { t } from '../i18n/index.svelte.js';
 
   let { isOpen, onClose }: { isOpen: boolean; onClose: () => void } = $props();
 
@@ -47,23 +48,23 @@
     }
   }
 
-  const features = [
-    { icon: '🖱️', label: 'Drag & Drop', description: 'Reorder your tasks by dragging them into place.' },
-    { icon: '🎯', label: 'Priority Levels', description: 'Assign high, medium, or low priority to stay focused.' },
-    { icon: '🏷️', label: 'Tags & Labels', description: 'Categorize tasks with color-coded tags.' },
-    { icon: '🌙', label: 'Dark Mode', description: 'Switch between light and dark themes for comfortable viewing.' },
-    { icon: '📅', label: 'Due Date Countdowns', description: 'Track deadlines with urgency-aware date displays.' },
-    { icon: '↩️', label: 'Undo Delete', description: 'Accidentally deleted a task? Undo it with one click.' },
-    { icon: '🔍', label: 'Live Search', description: 'Find tasks instantly as you type.' },
-    { icon: '🎉', label: 'Confetti Celebration', description: 'Complete all your tasks and enjoy a confetti surprise!' },
-  ];
+  const features = $derived([
+    { icon: '🖱️', label: t('about.feature.dragDrop'), description: t('about.feature.dragDrop.desc') },
+    { icon: '🎯', label: t('about.feature.priority'), description: t('about.feature.priority.desc') },
+    { icon: '🏷️', label: t('about.feature.tags'), description: t('about.feature.tags.desc') },
+    { icon: '🌙', label: t('about.feature.darkMode'), description: t('about.feature.darkMode.desc') },
+    { icon: '📅', label: t('about.feature.dueDate'), description: t('about.feature.dueDate.desc') },
+    { icon: '↩️', label: t('about.feature.undoDelete'), description: t('about.feature.undoDelete.desc') },
+    { icon: '🔍', label: t('about.feature.liveSearch'), description: t('about.feature.liveSearch.desc') },
+    { icon: '🎉', label: t('about.feature.confetti'), description: t('about.feature.confetti.desc') },
+  ]);
 
-  const shortcuts = [
-    { key: 'n', action: 'New todo' },
-    { key: 'Enter', action: 'Confirm' },
-    { key: 'Escape', action: 'Cancel / Close' },
-    { key: '?', action: 'Open About' },
-  ];
+  const shortcuts = $derived([
+    { key: 'n', action: t('about.shortcut.newTodo') },
+    { key: 'Enter', action: t('about.shortcut.confirm') },
+    { key: 'Escape', action: t('about.shortcut.cancelClose') },
+    { key: '?', action: t('about.shortcut.openAbout') },
+  ]);
 
   const techStack = [
     { name: 'Svelte 5', url: 'https://svelte.dev/' },
@@ -92,34 +93,33 @@
       transition:fly={{ y: 20, duration: 250 }}
     >
       <div class="modal-header">
-        <h2 id="about-title">About</h2>
+        <h2 id="about-title">{t('about.title')}</h2>
         <button
           class="close-btn"
           onclick={onClose}
-          aria-label="Close About"
+          aria-label={t('about.aria.close')}
           bind:this={closeButtonRef}
         >×</button>
       </div>
 
       <div class="modal-body">
         <section class="section identity">
-          <h3 class="app-name">✨ The Coolest Svelte To-Do App</h3>
-          <p class="tagline">A delightful, feature-rich task manager built with Svelte 5.</p>
+          <h3 class="app-name">{t('about.appName')}</h3>
+          <p class="tagline">{t('about.tagline')}</p>
           <span class="version">v{version}</span>
           <p class="description">
-            Stay organized with drag-and-drop reordering, smart filtering, priority levels, tags, and dark mode.
-            Built for speed and delight, this app makes managing your tasks a joy — not a chore.
+            {t('about.description')}
           </p>
         </section>
 
         <section class="section">
-          <h3>⌨️ Keyboard Shortcuts</h3>
+          <h3>{t('about.shortcuts')}</h3>
           <div class="shortcuts-table-wrapper">
             <table class="shortcuts-table">
               <thead>
                 <tr>
-                  <th>Shortcut</th>
-                  <th>Action</th>
+                  <th>{t('about.shortcuts.shortcut')}</th>
+                  <th>{t('about.shortcuts.action')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -135,7 +135,7 @@
         </section>
 
         <section class="section">
-          <h3>🚀 Features</h3>
+          <h3>{t('about.features')}</h3>
           <ul class="features-list">
             {#each features as feature}
               <li>
@@ -150,12 +150,12 @@
         </section>
 
         <section class="section">
-          <h3>🛠️ Built With</h3>
+          <h3>{t('about.builtWith')}</h3>
           <ul class="tech-list">
             {#each techStack as tech}
               <li>
                 <a href={tech.url} target="_blank" rel="noopener noreferrer">
-                  {tech.name}<span class="sr-only"> (opens in new tab)</span>
+                  {tech.name}<span class="sr-only"> {t('about.opensInNewTab')}</span>
                 </a>
               </li>
             {/each}

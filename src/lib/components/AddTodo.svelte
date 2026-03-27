@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Priority } from '../types.js';
   import { addTodo } from '../stores/todos.svelte.js';
+  import { t } from '../i18n/index.svelte.js';
   import TagChip from './TagChip.svelte';
   import PriorityBadge from './PriorityBadge.svelte';
   
@@ -19,7 +20,7 @@
     const trimmed = raw.trim();
     if (!trimmed) return;
     if (tags.length >= 10) {
-      tagError = 'Maximum 10 tags per todo';
+      tagError = t('todo.error.maxTags');
       return;
     }
     if (!tags.includes(trimmed)) {
@@ -47,11 +48,11 @@
   function handleSubmit(e: Event) {
     e.preventDefault();
     if (!title.trim()) {
-      titleError = 'Title is required';
+      titleError = t('todo.error.titleRequired');
       return;
     }
     if (title.length > 200) {
-      titleError = 'Title must be 200 characters or less';
+      titleError = t('todo.error.titleMaxLength');
       return;
     }
     titleError = '';
@@ -87,13 +88,13 @@
 
 <svelte:window onkeydown={handleKeydown} />
 
-<form class="add-todo" onsubmit={handleSubmit} novalidate aria-label="Add new todo">
+<form class="add-todo" onsubmit={handleSubmit} novalidate aria-label={t('aria.addNewTodo')}>
   <div class="field">
-    <label for="todo-title">Title <span aria-hidden="true">*</span></label>
+    <label for="todo-title">{t('todo.label.title')} <span aria-hidden="true">*</span></label>
     <input
       id="todo-title"
       type="text"
-      placeholder="What needs to be done?"
+      placeholder={t('todo.placeholder.title')}
       bind:value={title}
       maxlength={200}
       aria-required="true"
@@ -107,31 +108,31 @@
   </div>
   
   <div class="field">
-    <label for="todo-desc">Description</label>
-    <textarea id="todo-desc" placeholder="Optional details…" bind:value={description} rows={2}></textarea>
+    <label for="todo-desc">{t('todo.label.description')}</label>
+    <textarea id="todo-desc" placeholder={t('todo.placeholder.description')} bind:value={description} rows={2}></textarea>
   </div>
   
   <div class="row">
     <div class="field">
-      <label for="todo-priority">Priority</label>
+      <label for="todo-priority">{t('todo.label.priority')}</label>
       <div class="priority-select">
         <select id="todo-priority" bind:value={priority}>
-          <option value="high">High</option>
-          <option value="medium">Medium</option>
-          <option value="low">Low</option>
+          <option value="high">{t('priority.high')}</option>
+          <option value="medium">{t('priority.medium')}</option>
+          <option value="low">{t('priority.low')}</option>
         </select>
         <PriorityBadge {priority} />
       </div>
     </div>
     
     <div class="field">
-      <label for="todo-due">Due Date</label>
+      <label for="todo-due">{t('todo.label.dueDate')}</label>
       <input id="todo-due" type="date" bind:value={dueDate} />
     </div>
   </div>
   
   <div class="field">
-    <label for="todo-tags">Tags</label>
+    <label for="todo-tags">{t('todo.label.tags')}</label>
     <div class="tags-container">
       {#each tags as tag}
         <TagChip {tag} onRemove={() => removeTag(tag)} />
@@ -139,7 +140,7 @@
       <input
         id="todo-tags"
         type="text"
-        placeholder="Add tag, press Enter or comma"
+        placeholder={t('todo.placeholder.tag')}
         bind:value={tagInput}
         onkeydown={handleTagKeydown}
         onblur={handleTagBlur}
@@ -152,9 +153,9 @@
   </div>
   
   <div class="actions">
-    <button type="submit" class="btn-primary">Add Todo</button>
+    <button type="submit" class="btn-primary">{t('todo.add')}</button>
     {#if onClose}
-      <button type="button" class="btn-secondary" onclick={onClose}>Cancel</button>
+      <button type="button" class="btn-secondary" onclick={onClose}>{t('todo.cancel')}</button>
     {/if}
   </div>
 </form>

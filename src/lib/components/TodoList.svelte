@@ -2,6 +2,7 @@
   import { flip } from 'svelte/animate';
   import { fly } from 'svelte/transition';
   import { getFilteredTodos, getFilter, getSearchQuery } from '../stores/todos.svelte.js';
+  import { t } from '../i18n/index.svelte.js';
   import TodoItem from './TodoItem.svelte';
   import EmptyState from './EmptyState.svelte';
   
@@ -10,16 +11,16 @@
   const searchQuery = $derived(getSearchQuery());
   
   const emptyMessage = $derived(() => {
-    if (searchQuery.trim()) return `No results for "${searchQuery}"`;
-    if (filter !== 'all') return 'No tasks here — try a different filter.';
-    return 'No tasks yet — add one!';
+    if (searchQuery.trim()) return t('empty.noResults', { query: searchQuery });
+    if (filter !== 'all') return t('empty.noFilterResults');
+    return t('empty.noTasks');
   });
 </script>
 
 {#if filteredTodos.length === 0}
   <EmptyState message={emptyMessage()} />
 {:else}
-  <ul class="todo-list" role="list" aria-label="Todo list">
+  <ul class="todo-list" role="list" aria-label={t('aria.todoList')}>
     {#each filteredTodos as todo (todo.id)}
       <li
         animate:flip={{ duration: 250 }}
