@@ -23,6 +23,7 @@ export function clearAppStorage(): void {
     localStorage.removeItem('filter');
     localStorage.removeItem('sortBy');
     localStorage.removeItem('theme');
+    localStorage.removeItem('todo-app-locale');
   } catch {
     console.warn('[storage] Failed to clear app data.');
   }

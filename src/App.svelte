@@ -5,6 +5,7 @@
   import SearchBar from './lib/components/SearchBar.svelte';
   import ToastNotification from './lib/components/ToastNotification.svelte';
   import ThemeToggle from './lib/components/ThemeToggle.svelte';
+  import LanguageSwitcher from './lib/components/LanguageSwitcher.svelte';
   import Confetti from './lib/components/Confetti.svelte';
   import AboutModal from './lib/components/AboutModal.svelte';
   import SuggestionPanel from './lib/components/SuggestionPanel.svelte';
@@ -18,6 +19,7 @@
     resetToSystem,
   } from './lib/stores/theme.svelte.js';
   import type { Suggestion } from './lib/types.js';
+  import { t } from './lib/i18n/index.svelte.js';
 
   const themePreference = $derived(getThemePreference());
   const effectiveTheme = $derived(getEffectiveTheme());
@@ -73,7 +75,7 @@
 <div class="app">
   <header class="header">
     <div class="header-content">
-      <h1 class="title">✨ Todo App</h1>
+      <h1 class="title">{t('app.title')}</h1>
       <div class="header-actions">
         <button
           class="about-btn"
@@ -84,9 +86,10 @@
         <button
           class="about-btn"
           onclick={() => { showAbout = true; }}
-          aria-label="About"
+          aria-label={t('aria.about')}
           bind:this={aboutTriggerRef}
         >ⓘ</button>
+        <LanguageSwitcher />
         <ThemeToggle {themePreference} {effectiveTheme} onToggle={toggleTheme} onResetToSystem={resetToSystem} />
       </div>
     </div>

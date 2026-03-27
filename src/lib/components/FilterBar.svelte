@@ -1,9 +1,16 @@
 <script lang="ts">
   import type { Filter, SortBy } from '../types.js';
   import { getFilter, getSortBy, setFilter, setSortBy } from '../stores/todos.svelte.js';
+  import { t } from '../i18n/index.svelte.js';
   
   let activeFilter = $state<Filter>(getFilter());
   let activeSortBy = $state<SortBy>(getSortBy());
+
+  const filterLabels = $derived<Record<Filter, string>>({
+    all: t('filter.all'),
+    active: t('filter.active'),
+    completed: t('filter.completed'),
+  });
   
   function selectFilter(f: Filter) {
     activeFilter = f;
@@ -18,7 +25,7 @@
 </script>
 
 <div class="filter-bar">
-  <div class="filter-buttons" role="group" aria-label="Filter todos">
+  <div class="filter-buttons" role="group" aria-label={t('aria.filterTodos')}>
     {#each (['all', 'active', 'completed'] as Filter[]) as f}
       <button
         class="filter-btn"
@@ -26,17 +33,17 @@
         onclick={() => selectFilter(f)}
         aria-pressed={activeFilter === f}
       >
-        {f.charAt(0).toUpperCase() + f.slice(1)}
+        {filterLabels[f]}
       </button>
     {/each}
   </div>
   
-  <select class="sort-select" value={activeSortBy} onchange={handleSortChange} aria-label="Sort todos by">
-    <option value="createdAt">Created Date</option>
-    <option value="dueDate">Due Date</option>
-    <option value="priority">Priority</option>
-    <option value="title">Title</option>
-    <option value="manual">Manual Order</option>
+  <select class="sort-select" value={activeSortBy} onchange={handleSortChange} aria-label={t('aria.sortTodosBy')}>
+    <option value="createdAt">{t('sort.createdAt')}</option>
+    <option value="dueDate">{t('sort.dueDate')}</option>
+    <option value="priority">{t('sort.priority')}</option>
+    <option value="title">{t('sort.title')}</option>
+    <option value="manual">{t('sort.manual')}</option>
   </select>
 </div>
 

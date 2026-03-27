@@ -1,6 +1,7 @@
 <script lang="ts">
   import { fly } from 'svelte/transition';
   import { undoDelete, dismissToast } from '../stores/todos.svelte.js';
+  import { t } from '../i18n/index.svelte.js';
   
   const { show }: { show: boolean } = $props();
   
@@ -18,9 +19,9 @@
     aria-live="polite"
     transition:fly={{ y: 80, duration: 250 }}
   >
-    <span>Todo deleted</span>
-    <button class="undo-btn" onclick={undoDelete}>Undo</button>
-    <button class="dismiss-btn" onclick={dismissToast} aria-label="Dismiss notification">×</button>
+    <span>{t('toast.deleted')}</span>
+    <button class="undo-btn" onclick={undoDelete}>{t('toast.undo')}</button>
+    <button class="dismiss-btn" onclick={dismissToast} aria-label={t('toast.aria.dismiss')}>×</button>
   </div>
 {/if}
 
