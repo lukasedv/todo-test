@@ -136,7 +136,6 @@ export function getEmptyStateMessage(conditionCode: number | undefined): string 
 }
 
 export function getWeatherConflictMessage(forecast: WeatherForecastDay, date: string): string {
-  const conditionText = forecast.condition.conditionText.toLowerCase();
   return `${getWeatherEmoji(forecast.condition.conditionCode)} ${forecast.condition.conditionText} expected on ${date} — consider rescheduling.`;
 }
 

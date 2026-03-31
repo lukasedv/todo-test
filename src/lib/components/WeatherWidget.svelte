@@ -104,6 +104,9 @@
         <span class="weather-condition">{weather.current.conditionText}</span>
       </span>
       <span class="weather-location">{weather.location}</span>
+      {#if error}
+        <span class="last-updated" title={t('weather.lastUpdated', { time: lastUpdatedText() })}>⚠️</span>
+      {/if}
       <button
         class="settings-trigger"
         onclick={toggleSettings}
@@ -225,6 +228,12 @@
     font-size: 0.7rem;
     color: var(--color-text-muted);
     display: none;
+  }
+
+  .last-updated {
+    font-size: 0.7rem;
+    color: var(--color-priority-medium);
+    cursor: help;
   }
 
   @media (min-width: 768px) {
