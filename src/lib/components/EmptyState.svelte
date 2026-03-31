@@ -1,5 +1,5 @@
 <script lang="ts">
-  const { message }: { message: string } = $props();
+  const { message, weatherMessage }: { message: string; weatherMessage?: string | null } = $props();
 </script>
 
 <div class="empty-state" role="status" aria-live="polite">
@@ -12,7 +12,7 @@
     <circle cx="50" cy="100" r="6" fill="var(--color-border)"/>
     <circle cx="50" cy="124" r="6" fill="var(--color-border)"/>
   </svg>
-  <p class="message">{message}</p>
+  <p class="message">{weatherMessage ?? message}</p>
 </div>
 
 <style>

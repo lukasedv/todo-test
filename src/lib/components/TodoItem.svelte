@@ -5,7 +5,10 @@
   import PriorityBadge from './PriorityBadge.svelte';
   import TagChip from './TagChip.svelte';
   import SourceBadge from './SourceBadge.svelte';
+  import WeatherAlert from './WeatherAlert.svelte';
   import { getDueDateStatus, formatDueDate } from '../utils/date.js';
+  import { findForecastForDate, isBadWeather } from '../utils/weatherHelpers.js';
+  import { getWeatherData } from '../stores/weatherStore.svelte.js';
   
   const { todo }: { todo: Todo } = $props();
   
@@ -17,11 +20,20 @@
   let editTagInput = $state('');
   let editTags = $state<string[]>([]);
   let editTitleError = $state('');
+  let editWeatherSensitive = $state(false);
   let isDraggingOver = $state(false);
   
   const dueDateStatus = $derived(getDueDateStatus(todo.dueDate));
   const formattedDate = $derived(formatDueDate(todo.dueDate, getDateLocale()));
   const isManualSort = $derived(getSortBy() === 'manual');
+  
+  const weatherData = $derived(getWeatherData());
+  const weatherConflictForecast = $derived(() => {
+    if (!todo.weatherSensitive || !todo.dueDate || todo.completed || !weatherData) return null;
+    const forecastDay = findForecastForDate(weatherData.forecast, todo.dueDate);
+    if (forecastDay && isBadWeather(forecastDay.condition)) return forecastDay;
+    return null;
+  });
   
   function startEdit() {
     editTitle = todo.title;
@@ -31,6 +43,7 @@
     editTags = [...todo.tags];
     editTagInput = '';
     editTitleError = '';
+    editWeatherSensitive = todo.weatherSensitive ?? false;
     editing = true;
   }
   
@@ -55,6 +68,7 @@
       priority: editPriority,
       dueDate: editDueDate || undefined,
       tags: allTags,
+      weatherSensitive: editWeatherSensitive || undefined,
     });
     editing = false;
   }
@@ -121,6 +135,12 @@
         >{todo.title}</span>
         <PriorityBadge priority={todo.priority} />
         <SourceBadge source={todo.source} />
+        {#if todo.weatherSensitive}
+          <span class="weather-sensitive-badge" title={t('weather.sensitive')}>🌤️</span>
+        {/if}
+        {#if weatherConflictForecast() && todo.dueDate}
+          <WeatherAlert forecast={weatherConflictForecast()!} dueDate={todo.dueDate} />
+        {/if}
       </div>
       
       {#if todo.description}
@@ -203,6 +223,14 @@
           aria-label={t('todo.aria.addTag')}
         />
       </div>
+      <label class="weather-toggle">
+        <input
+          type="checkbox"
+          bind:checked={editWeatherSensitive}
+          aria-label={t('weather.sensitiveToggle')}
+        />
+        <span class="weather-toggle-text">🌤️ {t('weather.sensitiveToggle')}</span>
+      </label>
       <div class="edit-actions">
         <button class="btn-primary" onclick={confirmEdit}>{t('todo.save')}</button>
         <button class="btn-secondary" onclick={cancelEdit}>{t('todo.cancel')}</button>
@@ -298,6 +326,26 @@
   }
   .tags-container input { border: none; padding: 0; outline: none; background: transparent; flex: 1; min-width: 5rem; font-size: 0.8rem; color: var(--color-text); }
   .error { color: var(--color-priority-high); font-size: 0.8rem; margin: 0; }
+  .weather-sensitive-badge {
+    font-size: 0.75rem;
+    line-height: 1;
+  }
+  .weather-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+  }
+  .weather-toggle input[type="checkbox"] {
+    width: auto;
+    accent-color: var(--color-accent);
+    cursor: pointer;
+  }
+  .weather-toggle-text {
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+  }
   .edit-actions { display: flex; gap: 0.4rem; }
   .btn-primary {
     padding: 0.4rem 1rem; background: var(--color-accent); color: #fff; border: none;

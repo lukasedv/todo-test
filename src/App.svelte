@@ -10,6 +10,7 @@
   import AboutModal from './lib/components/AboutModal.svelte';
   import SuggestionPanel from './lib/components/SuggestionPanel.svelte';
   import IntegrationSettings from './lib/components/IntegrationSettings.svelte';
+  import WeatherWidget from './lib/components/WeatherWidget.svelte';
   import { getTodos, getDeletedTodo } from './lib/stores/todos.svelte.js';
   import { getConnected } from './lib/stores/m365Store.svelte.js';
   import {
@@ -77,6 +78,7 @@
     <div class="header-content">
       <h1 class="title">{t('app.title')}</h1>
       <div class="header-actions">
+        <WeatherWidget />
         <button
           class="about-btn"
           onclick={() => { showSettings = !showSettings; }}

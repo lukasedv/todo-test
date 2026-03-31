@@ -98,6 +98,29 @@ export interface Translations {
   'aria.about': string;
   'aria.removeTag': string;
   'language.label': string;
+  'weather.title': string;
+  'weather.unavailable': string;
+  'weather.retry': string;
+  'weather.loading': string;
+  'weather.lastUpdated': string;
+  'weather.changeLocation': string;
+  'weather.locationSearch': string;
+  'weather.searchPlaceholder': string;
+  'weather.useMyLocation': string;
+  'weather.temperatureUnit': string;
+  'weather.celsius': string;
+  'weather.fahrenheit': string;
+  'weather.forecast': string;
+  'weather.settings': string;
+  'weather.noLocation': string;
+  'weather.setLocation': string;
+  'weather.sensitive': string;
+  'weather.sensitiveToggle': string;
+  'weather.conflict': string;
+  'weather.aria.widget': string;
+  'weather.aria.forecast': string;
+  'weather.aria.settings': string;
+  'weather.aria.alert': string;
 }
 
 export type TranslationKey = keyof Translations;

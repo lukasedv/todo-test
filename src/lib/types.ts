@@ -18,6 +18,38 @@ export interface Todo {
   updatedAt: string;
   order?: number;
   source?: SourceMeta;
+  weatherSensitive?: boolean;
+}
+
+export type TemperatureUnit = 'C' | 'F';
+
+export interface WeatherCondition {
+  temperature: number;
+  temperatureUnit: TemperatureUnit;
+  conditionCode: number;
+  conditionText: string;
+  icon: string;
+  high?: number;
+  low?: number;
+}
+
+export interface WeatherForecastDay {
+  date: string;
+  condition: WeatherCondition;
+}
+
+export interface WeatherData {
+  location: string;
+  current: WeatherCondition;
+  forecast: WeatherForecastDay[];
+  fetchedAt: string;
+}
+
+export interface WeatherPreferences {
+  latitude?: number;
+  longitude?: number;
+  cityName?: string;
+  unit: TemperatureUnit;
 }
 
 export type Filter = 'all' | 'active' | 'completed';

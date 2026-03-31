@@ -15,6 +15,7 @@
   let tags = $state<string[]>([]);
   let titleError = $state('');
   let tagError = $state('');
+  let weatherSensitive = $state(false);
   
   function addTag(raw: string) {
     const trimmed = raw.trim();
@@ -70,6 +71,7 @@
       priority,
       tags: allTags,
       dueDate: dueDate || undefined,
+      weatherSensitive: weatherSensitive || undefined,
     });
     
     title = '';
@@ -78,6 +80,7 @@
     dueDate = '';
     tagInput = '';
     tags = [];
+    weatherSensitive = false;
     onClose?.();
   }
   
@@ -152,6 +155,17 @@
     {/if}
   </div>
   
+  <div class="field weather-sensitive-field">
+    <label class="weather-toggle">
+      <input
+        type="checkbox"
+        bind:checked={weatherSensitive}
+        aria-label={t('weather.sensitiveToggle')}
+      />
+      <span class="weather-toggle-label">🌤️ {t('weather.sensitiveToggle')}</span>
+    </label>
+  </div>
+  
   <div class="actions">
     <button type="submit" class="btn-primary">{t('todo.add')}</button>
     {#if onClose}
@@ -223,6 +237,25 @@
     font-size: 0.875rem;
   }
   .error { color: var(--color-priority-high); font-size: 0.8rem; margin: 0; }
+  .weather-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+  }
+  .weather-toggle input[type="checkbox"] {
+    width: auto;
+    accent-color: var(--color-accent);
+    cursor: pointer;
+  }
+  .weather-toggle-label {
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    font-weight: normal;
+    text-transform: none;
+    letter-spacing: normal;
+  }
   .actions { display: flex; gap: 0.5rem; margin-top: 0.25rem; }
   .btn-primary {
     padding: 0.5rem 1.25rem;
