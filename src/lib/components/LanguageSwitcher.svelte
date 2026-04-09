@@ -19,6 +19,7 @@
   >
     <option value="en">EN</option>
     <option value="fi">FI</option>
+    <option value="et">ET</option>
   </select>
 </div>
 

@@ -1,11 +1,12 @@
 import type { Translations, TranslationKey, Locale } from './types.js';
 import { en } from './en.js';
 import { fi } from './fi.js';
+import { et } from './et.js';
 
 const STORAGE_KEY = 'todo-app-locale';
-const SUPPORTED_LOCALES: Locale[] = ['en', 'fi'];
+const SUPPORTED_LOCALES: Locale[] = ['en', 'fi', 'et'];
 
-const translations: Record<Locale, Translations> = { en, fi };
+const translations: Record<Locale, Translations> = { en, fi, et };
 
 function detectBrowserLocale(): Locale {
   try {
@@ -48,7 +49,7 @@ $effect.root(() => {
   $effect(() => {
     saveLocale(currentLocale);
     try {
-      document.documentElement.lang = currentLocale === 'fi' ? 'fi' : 'en';
+      document.documentElement.lang = currentLocale;
     } catch {
       // Ignore DOM errors in non-browser environments
     }
@@ -74,7 +75,9 @@ export function t(key: TranslationKey, params?: Record<string, string>): string 
 }
 
 export function getDateLocale(): string {
-  return currentLocale === 'fi' ? 'fi-FI' : 'en-US';
+  if (currentLocale === 'fi') return 'fi-FI';
+  if (currentLocale === 'et') return 'et-EE';
+  return 'en-US';
 }
 
 export { SUPPORTED_LOCALES };
