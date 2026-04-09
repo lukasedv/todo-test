@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { en } from '$lib/i18n/en.js';
 import { fi } from '$lib/i18n/fi.js';
+import { et } from '$lib/i18n/et.js';
 import type { TranslationKey } from '$lib/i18n/types.js';
 
 describe('Translation files', () => {
@@ -8,6 +9,12 @@ describe('Translation files', () => {
     const enKeys = Object.keys(en).sort();
     const fiKeys = Object.keys(fi).sort();
     expect(enKeys).toEqual(fiKeys);
+  });
+
+  it('en and et have identical keys', () => {
+    const enKeys = Object.keys(en).sort();
+    const etKeys = Object.keys(et).sort();
+    expect(enKeys).toEqual(etKeys);
   });
 
   it('no translation value is empty in en', () => {
@@ -19,6 +26,12 @@ describe('Translation files', () => {
   it('no translation value is empty in fi', () => {
     for (const [key, value] of Object.entries(fi)) {
       expect(value, `fi key "${key}" should not be empty`).toBeTruthy();
+    }
+  });
+
+  it('no translation value is empty in et', () => {
+    for (const [key, value] of Object.entries(et)) {
+      expect(value, `et key "${key}" should not be empty`).toBeTruthy();
     }
   });
 
@@ -34,6 +47,12 @@ describe('Translation files', () => {
     }
   });
 
+  it('all values are strings in et', () => {
+    for (const [key, value] of Object.entries(et)) {
+      expect(typeof value, `et key "${key}" should be a string`).toBe('string');
+    }
+  });
+
   it('priority translations exist for all levels', () => {
     expect(en['priority.low']).toBe('Low');
     expect(en['priority.medium']).toBe('Medium');
@@ -41,6 +60,9 @@ describe('Translation files', () => {
     expect(fi['priority.low']).toBe('Matala');
     expect(fi['priority.medium']).toBe('Keskitaso');
     expect(fi['priority.high']).toBe('Korkea');
+    expect(et['priority.low']).toBe('Madal');
+    expect(et['priority.medium']).toBe('Keskmine');
+    expect(et['priority.high']).toBe('Kõrge');
   });
 
   it('filter translations exist', () => {
@@ -50,6 +72,9 @@ describe('Translation files', () => {
     expect(fi['filter.all']).toBe('Kaikki');
     expect(fi['filter.active']).toBe('Aktiiviset');
     expect(fi['filter.completed']).toBe('Valmiit');
+    expect(et['filter.all']).toBe('Kõik');
+    expect(et['filter.active']).toBe('Aktiivsed');
+    expect(et['filter.completed']).toBe('Lõpetatud');
   });
 
   it('date translations exist', () => {
@@ -57,6 +82,8 @@ describe('Translation files', () => {
     expect(en['date.today']).toContain('today');
     expect(fi['date.overdue']).toContain('Myöhässä');
     expect(fi['date.today']).toContain('Tänään');
+    expect(et['date.overdue']).toContain('Tähtaeg ületatud');
+    expect(et['date.today']).toContain('Täna');
   });
 
   it('interpolation placeholders match between en and fi', () => {
@@ -67,6 +94,17 @@ describe('Translation files', () => {
       const enMatches = [...en[key].matchAll(placeholderRegex)].map(m => m[1]).sort();
       const fiMatches = [...fi[key].matchAll(placeholderRegex)].map(m => m[1]).sort();
       expect(fiMatches, `Placeholders for key "${key}" should match between en and fi`).toEqual(enMatches);
+    }
+  });
+
+  it('interpolation placeholders match between en and et', () => {
+    const placeholderRegex = /\{(\w+)\}/g;
+    const enKeys = Object.keys(en) as TranslationKey[];
+
+    for (const key of enKeys) {
+      const enMatches = [...en[key].matchAll(placeholderRegex)].map(m => m[1]).sort();
+      const etMatches = [...et[key].matchAll(placeholderRegex)].map(m => m[1]).sort();
+      expect(etMatches, `Placeholders for key "${key}" should match between en and et`).toEqual(enMatches);
     }
   });
 });
@@ -107,8 +145,9 @@ describe('i18n module', () => {
     expect(result).toContain('test');
   });
 
-  it('SUPPORTED_LOCALES contains en and fi', () => {
+  it('SUPPORTED_LOCALES contains en, fi, and et', () => {
     expect(i18nModule.SUPPORTED_LOCALES).toContain('en');
     expect(i18nModule.SUPPORTED_LOCALES).toContain('fi');
+    expect(i18nModule.SUPPORTED_LOCALES).toContain('et');
   });
 });
