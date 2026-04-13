@@ -280,7 +280,7 @@
   .btn-primary {
     padding: var(--space-3) var(--space-5);
     background: var(--color-accent);
-    color: #fff;
+    color: var(--color-on-accent);
     border: none;
     border-radius: var(--radius-md);
     cursor: pointer;

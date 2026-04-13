@@ -80,7 +80,7 @@
   }
   .filter-btn.active {
     background: var(--color-accent);
-    color: #fff;
+    color: var(--color-on-accent);
     font-weight: 600;
     box-shadow: var(--shadow-sm);
   }

@@ -342,7 +342,7 @@
   .checkmark {
     width: 12px;
     height: 12px;
-    color: #fff;
+    color: var(--color-on-accent);
     opacity: 0;
     transform: scale(0.5);
     transition: opacity 0.2s ease, transform 0.2s ease;
@@ -556,7 +556,7 @@
   .btn-primary {
     padding: var(--space-2) var(--space-4);
     background: var(--color-accent);
-    color: #fff;
+    color: var(--color-on-accent);
     border: none;
     border-radius: var(--radius-md);
     cursor: pointer;

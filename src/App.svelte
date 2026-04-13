@@ -199,6 +199,9 @@
     --letter-spacing-tight: -0.01em;
     --letter-spacing-normal: 0;
     --letter-spacing-wide: 0.04em;
+
+    /* Text on accent backgrounds */
+    --color-on-accent: #ffffff;
   }
 
   :global(html.dark) {
@@ -236,6 +239,8 @@
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.25), 0 2px 4px -2px rgb(0 0 0 / 0.15);
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.15);
     --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.35), 0 8px 10px -6px rgb(0 0 0 / 0.15);
+
+    --color-on-accent: #ffffff;
   }
 
   :global(*) {
