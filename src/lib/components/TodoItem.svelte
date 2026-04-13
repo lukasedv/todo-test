@@ -106,6 +106,7 @@
   class:completed={todo.completed}
   class:editing
   class:drag-over={isDraggingOver}
+  data-priority={todo.priority}
   role="listitem"
   draggable={isManualSort}
   ondragstart={handleDragStart}
@@ -118,12 +119,19 @@
   {/if}
   
   {#if !editing}
-    <input
-      type="checkbox"
-      aria-label={todo.completed ? t('todo.aria.markActive', { title: todo.title }) : t('todo.aria.markComplete', { title: todo.title })}
-      checked={todo.completed}
-      onchange={() => toggleTodo(todo.id)}
-    />
+    <label class="custom-checkbox">
+      <input
+        type="checkbox"
+        aria-label={todo.completed ? t('todo.aria.markActive', { title: todo.title }) : t('todo.aria.markComplete', { title: todo.title })}
+        checked={todo.completed}
+        onchange={() => toggleTodo(todo.id)}
+      />
+      <span class="checkbox-visual">
+        <svg class="checkmark" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="2,6 5,9 10,3" />
+        </svg>
+      </span>
+    </label>
     
     <div class="content">
       <div class="title-row">
@@ -243,91 +251,289 @@
   .todo-item {
     display: flex;
     align-items: flex-start;
-    gap: 0.75rem;
-    padding: 0.875rem 1rem;
-    background: var(--color-bg);
+    gap: var(--space-3);
+    padding: var(--space-4);
+    background: var(--color-card);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    transition: box-shadow 0.15s, opacity 0.15s;
+    border-radius: var(--radius-lg);
+    border-left: 4px solid var(--color-border);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
     list-style: none;
+    position: relative;
   }
-  .todo-item:hover { box-shadow: var(--shadow-md); }
-  .todo-item.completed { opacity: 0.65; }
-  .todo-item.drag-over { border-color: var(--color-accent); box-shadow: 0 0 0 2px var(--color-accent); }
+  .todo-item:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-1px);
+    border-color: var(--color-border-hover);
+  }
+  .todo-item.completed {
+    opacity: 0.55;
+    border-left-color: var(--color-success) !important;
+  }
+  .todo-item.completed:hover {
+    opacity: 0.75;
+  }
+  .todo-item.drag-over {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 2px var(--color-accent-soft), var(--shadow-lg);
+  }
+
+  /* Priority stripe on the left */
+  .todo-item[data-priority="high"] { border-left-color: var(--color-priority-high); }
+  .todo-item[data-priority="medium"] { border-left-color: var(--color-priority-medium); }
+  .todo-item[data-priority="low"] { border-left-color: var(--color-priority-low); }
+
   .drag-handle {
     cursor: grab;
     color: var(--color-text-muted);
     font-size: 1.25rem;
-    padding: 0.1rem;
+    padding: var(--space-1);
     flex-shrink: 0;
+    border-radius: var(--radius-sm);
+    transition: color 0.15s ease, background 0.15s ease;
+  }
+  .drag-handle:hover {
+    color: var(--color-text-secondary);
+    background: var(--color-accent-soft);
   }
   .drag-handle:active { cursor: grabbing; }
-  input[type="checkbox"] {
-    width: 1.1rem;
-    height: 1.1rem;
-    margin-top: 0.15rem;
-    cursor: pointer;
+
+  /* Custom checkbox */
+  .custom-checkbox {
+    position: relative;
+    width: 1.375rem;
+    height: 1.375rem;
+    margin-top: 0.1rem;
     flex-shrink: 0;
-    accent-color: var(--color-accent);
   }
+  .custom-checkbox input[type="checkbox"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 1;
+    margin: 0;
+  }
+  .checkbox-visual {
+    width: 100%;
+    height: 100%;
+    border: 2px solid var(--color-border-hover);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+    background: var(--color-bg);
+  }
+  .custom-checkbox input:checked + .checkbox-visual {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+  .custom-checkbox input:focus-visible + .checkbox-visual {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+  .custom-checkbox input:hover + .checkbox-visual {
+    border-color: var(--color-accent);
+    transform: scale(1.08);
+  }
+  .checkmark {
+    width: 12px;
+    height: 12px;
+    color: #fff;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .custom-checkbox input:checked + .checkbox-visual .checkmark {
+    opacity: 1;
+    transform: scale(1);
+  }
+
   .content { flex: 1; min-width: 0; }
-  .title-row { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+  .title-row { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; }
   .title {
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
     word-break: break-word;
+    line-height: var(--line-height-tight);
+    transition: color 0.15s ease;
   }
-  .completed .title { text-decoration: line-through; }
-  .description { margin: 0.25rem 0 0; font-size: 0.85rem; color: var(--color-text-muted); }
-  .meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.4rem; align-items: center; }
-  .due-date { font-size: 0.75rem; font-weight: 500; }
-  .due-overdue { color: var(--color-priority-high); }
-  .due-today { color: var(--color-priority-medium); }
-  .due-soon { color: var(--color-priority-medium); }
+  .completed .title {
+    text-decoration: line-through;
+    color: var(--color-text-muted);
+  }
+  .description {
+    margin: var(--space-1) 0 0;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: var(--line-height-relaxed);
+  }
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+    align-items: center;
+  }
+  .due-date {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: var(--radius-full);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  .due-overdue {
+    color: var(--color-priority-high);
+    background: var(--color-priority-high-bg);
+  }
+  .due-today {
+    color: var(--color-priority-medium);
+    background: var(--color-priority-medium-bg);
+  }
+  .due-soon {
+    color: var(--color-priority-medium);
+    background: var(--color-priority-medium-bg);
+  }
+  .due-future {
+    color: var(--color-text-muted);
+    background: var(--color-surface);
+  }
   .tags { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+
   .actions {
     display: flex;
-    gap: 0.35rem;
+    gap: var(--space-1);
     flex-shrink: 0;
     opacity: 0;
-    transition: opacity 0.15s;
+    transition: opacity 0.15s ease;
   }
   .todo-item:hover .actions, .todo-item:focus-within .actions { opacity: 1; }
+
   .edit-btn, .delete-btn {
     background: none;
-    border: 1px solid var(--color-border);
+    border: 1px solid transparent;
     border-radius: var(--radius-md);
     cursor: pointer;
-    padding: 0.25rem 0.45rem;
-    font-size: 0.85rem;
-    transition: background 0.15s;
+    padding: var(--space-1) var(--space-2);
+    font-size: var(--font-size-sm);
+    min-width: 36px;
+    min-height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+    color: var(--color-text-muted);
   }
-  .edit-btn:hover { background: var(--color-surface); }
-  .delete-btn:hover { background: var(--color-danger-hover-bg); border-color: var(--color-priority-high); }
-  
-  .edit-form { flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
+  .edit-btn:hover {
+    background: var(--color-accent-soft);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+  .delete-btn:hover {
+    background: var(--color-danger-hover-bg);
+    border-color: var(--color-priority-high);
+    color: var(--color-priority-high);
+    transform: scale(1.08);
+  }
+  .delete-btn:active {
+    transform: scale(0.92);
+  }
+  .edit-btn:focus-visible, .delete-btn:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  .edit-form { flex: 1; display: flex; flex-direction: column; gap: var(--space-2); }
   .edit-title {
-    width: 100%; padding: 0.4rem 0.6rem; border: 1px solid var(--color-border);
-    border-radius: var(--radius-md); font-size: 0.9rem; font-weight: 500;
-    background: var(--color-bg); color: var(--color-text); box-sizing: border-box;
+    width: 100%;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    background: var(--color-bg);
+    color: var(--color-text);
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
-  .edit-title:focus { outline: 2px solid var(--color-accent); outline-offset: 1px; }
+  .edit-title:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px var(--color-accent-soft);
+  }
   .edit-desc {
-    width: 100%; padding: 0.4rem 0.6rem; border: 1px solid var(--color-border);
-    border-radius: var(--radius-md); font-size: 0.85rem; resize: vertical;
-    background: var(--color-bg); color: var(--color-text); box-sizing: border-box; font-family: inherit;
+    width: 100%;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    resize: vertical;
+    background: var(--color-bg);
+    color: var(--color-text);
+    box-sizing: border-box;
+    font-family: inherit;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
-  .edit-row { display: flex; gap: 0.5rem; }
-  .edit-row select, .edit-row input { flex: 1; padding: 0.35rem 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg); color: var(--color-text); font-size: 0.85rem; }
+  .edit-desc:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px var(--color-accent-soft);
+  }
+  .edit-row { display: flex; gap: var(--space-2); }
+  .edit-row select, .edit-row input {
+    flex: 1;
+    padding: var(--space-2) var(--space-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-size: var(--font-size-sm);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .edit-row select:focus, .edit-row input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px var(--color-accent-soft);
+  }
   .tags-container {
-    display: flex; flex-wrap: wrap; gap: 0.3rem; align-items: center;
-    padding: 0.3rem 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-md);
-    background: var(--color-bg); min-height: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    align-items: center;
+    padding: var(--space-1) var(--space-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-bg);
+    min-height: 2rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
-  .tags-container input { border: none; padding: 0; outline: none; background: transparent; flex: 1; min-width: 5rem; font-size: 0.8rem; color: var(--color-text); }
-  .error { color: var(--color-priority-high); font-size: 0.8rem; margin: 0; }
+  .tags-container:focus-within {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px var(--color-accent-soft);
+  }
+  .tags-container input {
+    border: none;
+    padding: 0;
+    outline: none;
+    background: transparent;
+    flex: 1;
+    min-width: 5rem;
+    font-size: var(--font-size-xs);
+    color: var(--color-text);
+  }
+  .error {
+    color: var(--color-error);
+    font-size: var(--font-size-xs);
+    margin: 0;
+    font-weight: 500;
+  }
   .weather-sensitive-badge {
-    font-size: 0.75rem;
+    font-size: var(--font-size-xs);
     line-height: 1;
   }
   .weather-toggle {
@@ -335,7 +541,7 @@
     align-items: center;
     gap: 0.3rem;
     cursor: pointer;
-    font-size: 0.8rem;
+    font-size: var(--font-size-xs);
   }
   .weather-toggle input[type="checkbox"] {
     width: auto;
@@ -344,17 +550,53 @@
   }
   .weather-toggle-text {
     color: var(--color-text-muted);
-    font-size: 0.8rem;
+    font-size: var(--font-size-xs);
   }
-  .edit-actions { display: flex; gap: 0.4rem; }
+  .edit-actions { display: flex; gap: var(--space-2); }
   .btn-primary {
-    padding: 0.4rem 1rem; background: var(--color-accent); color: #fff; border: none;
-    border-radius: var(--radius-md); cursor: pointer; font-weight: 600; font-size: 0.8rem;
+    padding: var(--space-2) var(--space-4);
+    background: var(--color-accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: var(--font-size-sm);
+    transition: background 0.15s ease, transform 0.15s ease;
   }
-  .btn-primary:hover { opacity: 0.9; }
+  .btn-primary:hover {
+    background: var(--color-accent-hover);
+    transform: translateY(-1px);
+  }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-primary:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
   .btn-secondary {
-    padding: 0.4rem 1rem; background: transparent; color: var(--color-text-muted);
-    border: 1px solid var(--color-border); border-radius: var(--radius-md); cursor: pointer; font-size: 0.8rem;
+    padding: var(--space-2) var(--space-4);
+    background: transparent;
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: var(--font-size-sm);
+    transition: background 0.15s ease, border-color 0.15s ease;
   }
-  .btn-secondary:hover { background: var(--color-surface); }
+  .btn-secondary:hover {
+    background: var(--color-surface);
+    border-color: var(--color-border-hover);
+  }
+  .btn-secondary:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .todo-item, .todo-item:hover,
+    .custom-checkbox input:hover + .checkbox-visual,
+    .delete-btn:hover, .delete-btn:active {
+      transform: none !important;
+    }
+  }
 </style>

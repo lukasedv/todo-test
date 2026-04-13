@@ -45,6 +45,8 @@ export const en: Translations = {
   'empty.noResults': 'No results for "{query}"',
   'empty.noFilterResults': 'No tasks here — try a different filter.',
   'empty.noTasks': 'No tasks yet — add one!',
+  'empty.ctaHint': 'Use the form above to create your first task.',
+  'confetti.allDone': 'All tasks completed! 🎉',
   'toast.deleted': 'Todo deleted',
   'toast.undo': 'Undo',
   'toast.aria.dismiss': 'Dismiss notification',

@@ -33,7 +33,7 @@
 </script>
 
 {#if filteredTodos.length === 0}
-  <EmptyState message={emptyMessage()} weatherMessage={weatherEmptyMessage()} />
+  <EmptyState message={emptyMessage()} weatherMessage={weatherEmptyMessage()} showCta={!searchQuery.trim() && filter === 'all'} />
 {:else}
   <ul class="todo-list" role="list" aria-label={t('aria.todoList')}>
     {#each filteredTodos as todo (todo.id)}
@@ -52,7 +52,7 @@
   .todo-list {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: var(--space-3);
     padding: 0;
     margin: 0;
   }

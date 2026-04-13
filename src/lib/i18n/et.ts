@@ -45,6 +45,8 @@ export const et: Translations = {
   'empty.noResults': 'Tulemused puuduvad päringule "{query}"',
   'empty.noFilterResults': 'Siin pole ülesandeid — proovi teist filtrit.',
   'empty.noTasks': 'Ülesandeid veel pole — lisa üks!',
+  'empty.ctaHint': 'Kasuta ülalpool olevat vormi oma esimese ülesande loomiseks.',
+  'confetti.allDone': 'Kõik ülesanded täidetud! 🎉',
   'toast.deleted': 'Ülesanne kustutatud',
   'toast.undo': 'Võta tagasi',
   'toast.aria.dismiss': 'Sulge teade',

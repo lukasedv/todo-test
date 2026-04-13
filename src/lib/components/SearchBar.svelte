@@ -38,36 +38,61 @@
   .search-bar {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: var(--space-2);
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    padding: 0.4rem 0.75rem;
+    border-radius: var(--radius-lg);
+    padding: var(--space-2) var(--space-3);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    min-height: 42px;
+  }
+  .search-bar:focus-within {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px var(--color-accent-soft);
   }
   .icon {
-    width: 1rem;
-    height: 1rem;
+    width: 1.125rem;
+    height: 1.125rem;
     color: var(--color-text-muted);
     flex-shrink: 0;
+    transition: color 0.15s ease;
+  }
+  .search-bar:focus-within .icon {
+    color: var(--color-accent);
   }
   input {
     border: none;
     background: transparent;
     outline: none;
-    font-size: 0.875rem;
+    font-size: var(--font-size-sm);
     color: var(--color-text);
     flex: 1;
     min-width: 0;
   }
   input::placeholder { color: var(--color-text-muted); }
   .clear-btn {
-    background: none;
+    background: var(--color-border);
     border: none;
     cursor: pointer;
     color: var(--color-text-muted);
-    font-size: 1.1rem;
+    font-size: 0.8rem;
     padding: 0;
     line-height: 1;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: var(--radius-full);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease, color 0.15s ease;
+    flex-shrink: 0;
   }
-  .clear-btn:hover { color: var(--color-text); }
+  .clear-btn:hover {
+    color: var(--color-text);
+    background: var(--color-border-hover);
+  }
+  .clear-btn:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
 </style>

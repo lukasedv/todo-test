@@ -87,7 +87,7 @@
   .theme-toggle-wrapper {
     display: flex;
     align-items: center;
-    gap: 0.375rem;
+    gap: var(--space-1);
   }
 
   .theme-toggle {
@@ -101,12 +101,18 @@
     border-radius: var(--radius-md);
     cursor: pointer;
     color: var(--color-text);
-    padding: 0.5rem;
-    transition: background-color 0.2s ease, border-color 0.2s ease;
+    padding: var(--space-2);
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
   }
 
   .theme-toggle:hover {
-    background: var(--color-surface);
+    background: var(--color-accent-soft);
+    border-color: var(--color-accent);
+    transform: scale(1.05);
+  }
+
+  .theme-toggle:active {
+    transform: scale(0.95);
   }
 
   .theme-toggle:focus-visible {
@@ -118,7 +124,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    animation: icon-enter 0.25s ease;
+    animation: icon-enter 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   @keyframes icon-enter {
@@ -138,17 +144,17 @@
     cursor: pointer;
     font-size: 0.7rem;
     color: var(--color-text-muted);
-    padding: 0.25rem 0.375rem;
-    border-radius: var(--radius-md);
+    padding: var(--space-1) var(--space-1);
+    border-radius: var(--radius-sm);
     transition: color 0.2s ease, background-color 0.2s ease;
     text-transform: uppercase;
     font-weight: 600;
-    letter-spacing: 0.025em;
+    letter-spacing: var(--letter-spacing-wide);
   }
 
   .reset-btn:hover {
     color: var(--color-accent);
-    background: var(--color-surface);
+    background: var(--color-accent-soft);
   }
 
   .reset-btn:focus-visible {
@@ -159,6 +165,9 @@
   @media (prefers-reduced-motion: reduce) {
     .icon {
       animation: none;
+    }
+    .theme-toggle:hover, .theme-toggle:active {
+      transform: none;
     }
   }
 </style>

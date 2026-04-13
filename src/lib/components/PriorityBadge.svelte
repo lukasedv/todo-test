@@ -20,12 +20,13 @@
 <style>
   .badge {
     display: inline-block;
-    padding: 0.15rem 0.5rem;
-    border-radius: 9999px;
-    font-size: 0.7rem;
+    padding: 0.125rem 0.5rem;
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: var(--letter-spacing-wide);
+    line-height: var(--line-height-normal);
   }
   .badge-high { background: var(--color-priority-high-bg); color: var(--color-priority-high); border: 1px solid var(--color-priority-high); }
   .badge-medium { background: var(--color-priority-medium-bg); color: var(--color-priority-medium); border: 1px solid var(--color-priority-medium); }
