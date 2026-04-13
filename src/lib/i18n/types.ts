@@ -1,4 +1,4 @@
-export type Locale = 'en' | 'fi' | 'et';
+export type Locale = 'en' | 'fi' | 'et' | 'da';
 
 export interface Translations {
   'app.title': string;

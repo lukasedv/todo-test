@@ -2,11 +2,12 @@ import type { Translations, TranslationKey, Locale } from './types.js';
 import { en } from './en.js';
 import { fi } from './fi.js';
 import { et } from './et.js';
+import { da } from './da.js';
 
 const STORAGE_KEY = 'todo-app-locale';
-const SUPPORTED_LOCALES: Locale[] = ['en', 'fi', 'et'];
+const SUPPORTED_LOCALES: Locale[] = ['en', 'fi', 'et', 'da'];
 
-const translations: Record<Locale, Translations> = { en, fi, et };
+const translations: Record<Locale, Translations> = { en, fi, et, da };
 
 function detectBrowserLocale(): Locale {
   try {
@@ -77,6 +78,7 @@ export function t(key: TranslationKey, params?: Record<string, string>): string 
 export function getDateLocale(): string {
   if (currentLocale === 'fi') return 'fi-FI';
   if (currentLocale === 'et') return 'et-EE';
+  if (currentLocale === 'da') return 'da-DK';
   return 'en-US';
 }
 
