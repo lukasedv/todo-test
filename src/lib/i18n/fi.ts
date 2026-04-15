@@ -45,6 +45,8 @@ export const fi: Translations = {
   'empty.noResults': 'Ei tuloksia haulle "{query}"',
   'empty.noFilterResults': 'Ei tehtäviä täällä — kokeile toista suodatinta.',
   'empty.noTasks': 'Ei tehtäviä vielä — lisää yksi!',
+  'empty.ctaHint': 'Käytä yllä olevaa lomaketta luodaksesi ensimmäisen tehtävän.',
+  'confetti.allDone': 'Kaikki tehtävät suoritettu! 🎉',
   'toast.deleted': 'Tehtävä poistettu',
   'toast.undo': 'Kumoa',
   'toast.aria.dismiss': 'Sulje ilmoitus',

@@ -45,6 +45,8 @@ export interface Translations {
   'empty.noResults': string;
   'empty.noFilterResults': string;
   'empty.noTasks': string;
+  'empty.ctaHint': string;
+  'confetti.allDone': string;
   'toast.deleted': string;
   'toast.undo': string;
   'toast.aria.dismiss': string;

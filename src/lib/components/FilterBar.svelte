@@ -51,40 +51,60 @@
   .filter-bar {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: var(--space-3);
     flex-wrap: wrap;
   }
   .filter-buttons {
     display: flex;
-    gap: 0.25rem;
+    gap: var(--space-1);
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     padding: 0.2rem;
   }
   .filter-btn {
-    padding: 0.3rem 0.85rem;
+    padding: var(--space-2) var(--space-4);
     border: none;
-    border-radius: calc(var(--radius-md) - 2px);
+    border-radius: calc(var(--radius-lg) - 2px);
     cursor: pointer;
-    font-size: 0.875rem;
+    font-size: var(--font-size-sm);
+    font-weight: 500;
     background: transparent;
     color: var(--color-text-muted);
-    transition: all 0.15s;
+    transition: all 0.2s ease;
+    min-height: 36px;
+  }
+  .filter-btn:hover {
+    color: var(--color-text-secondary);
+    background: var(--color-accent-soft);
   }
   .filter-btn.active {
-    background: var(--color-bg);
-    color: var(--color-text);
+    background: var(--color-accent);
+    color: var(--color-on-accent);
     font-weight: 600;
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-sm);
+  }
+  .filter-btn:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
   }
   .sort-select {
-    padding: 0.4rem 0.75rem;
+    padding: var(--space-2) var(--space-3);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     background: var(--color-surface);
     color: var(--color-text);
-    font-size: 0.875rem;
+    font-size: var(--font-size-sm);
     cursor: pointer;
+    min-height: 36px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .sort-select:hover {
+    border-color: var(--color-border-hover);
+  }
+  .sort-select:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px var(--color-accent-soft);
   }
 </style>
